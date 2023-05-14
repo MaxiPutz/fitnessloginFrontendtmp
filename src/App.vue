@@ -1,24 +1,15 @@
 <template>
-    <Login></Login>
+  <div>
+    <nav>
+      <router-link to="/">Login</router-link> | 
+      <router-link to="/register">Register</router-link>
+    </nav>
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-
-import HelloWorld from './components/HelloWorld.vue';
-import Login from './view/Login.vue';
-import Register from './view/Register.vue';
-
-@Options({
-  components: {
-    HelloWorld,
-    Login,
-    Register
-  },
-})
-
-export default class App extends Vue {}
-</script>
 
 <style>
 #app {
