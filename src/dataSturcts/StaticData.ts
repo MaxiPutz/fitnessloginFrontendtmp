@@ -1,5 +1,5 @@
 export class ServerAddress {
-    private ip  = "172.20.19.12"
+    private ip  = "192.168.0.206"
     private port  = "8080"
 
 

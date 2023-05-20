@@ -1,0 +1,30 @@
+[
+    {
+        "username": "admin",
+        "clientId": null,
+        "clientSecret": null,
+        "metadataId": "8740964813",
+        "sport": "Ride",
+        "startTime": "2023-03-19 09:01:26",
+        "averagePower": 0,
+        "averageSpeed": 13,
+        "averageHearRate": 151.1,
+        "totalTime": 13025,
+        "totalDistance": 38.8,
+        "workoutDataCount": 100
+    },
+    {
+        "username": "admin",
+        "clientId": null,
+        "clientSecret": null,
+        "metadataId": "8725344493",
+        "sport": "Run",
+        "startTime": "2023-03-16 16:52:56",
+        "averagePower": 218,
+        "averageSpeed": 8,
+        "averageHearRate": 149,
+        "totalTime": 2998,
+        "totalDistance": 6.2,
+        "workoutDataCount": 100
+    }
+]
