@@ -7,4 +7,5 @@ export class ServerAddress {
         return `http://${this.ip}:${this.port}`
     }
     
+    
 }

@@ -12,21 +12,12 @@
                     <th>Average Heart Rate</th>
                     <th>Total Time</th>
                     <th>Total Distance</th>
-                    <th>Workout Data Count</th>
+                    <th> Count</th>
+                    <th>actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr v-for="data in dashboardData" :key="data.metadataId">
-                    <td>{{ data.metadataId }}</td>
-                    <td>{{ data.sport }}</td>
-                    <td>{{ data.startTime }}</td>
-                    <td>{{ data.averagePower }}</td>
-                    <td>{{ data.averageSpeed }}</td>
-                    <td>{{ data.averageHearRate }}</td>
-                    <td>{{ data.totalTime }}</td>
-                    <td>{{ data.totalDistance }}</td>
-                    <td>{{ data.workoutDataCount }}</td>
-                </tr>
+            <tbody v-for="data2 in dashboardData" :key="data2.metadataId">
+                <DashboardRow :msg="data2" />
             </tbody>
         </table>
     </div>
@@ -34,10 +25,15 @@
   
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { DashboardStruct } from '@/dataSturcts/interfaces';
+import { ClientData } from '@/dataSturcts/interfaces/interfaces';
+import { Metadata } from "@/dataSturcts/interfaces/Metadata"
+import DashboardRow from './DashboardRow.vue'; "@/app/main/components/DashboardRow.vue"
 import store from '@/store';
 
 @Options({
+    components: {
+        DashboardRow
+    },
     props: {
         msg: {
             type: [],
@@ -46,13 +42,16 @@ import store from '@/store';
     }
 })
 export default class DashboardTable extends Vue {
-    public dashboardData: DashboardStruct[] = [];
-
+    public dashboardData: Metadata[] = [];
 
     mounted(): void {
-        var d: DashboardStruct[] = store.getters.getDashboardData;
+        var d: Metadata[] = store.getters.getDashboardData;
         console.log(d)
         this.dashboardData = d;
+
+        store.watch(() => store.getters.getDashboardData, (newData: Metadata[]) => {
+            this.dashboardData = newData;
+        });
     }
 }
 </script>

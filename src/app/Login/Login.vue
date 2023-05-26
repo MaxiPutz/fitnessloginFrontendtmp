@@ -4,15 +4,13 @@
     <form @submit.prevent="onLoginSubmit">
 
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username"><br><br>
+      <input type="text" id="username" v-model="username" name="username"><br><br>
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password"><br><br>
+      <input type="password" id="password" v-model="password" name="password"><br><br>
       <input type="submit" value="Login">
-      <input type="submit" value="Register">
-
     </form>
 
-    <Dashboard msg="dere"/>
+    <Dashboard msg="dere" />
 
   </div>
 </template>
@@ -20,7 +18,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import { requests } from "@/dataSturcts/ServerRequests"
-import { User, ClientData, DashboardStruct } from '@/dataSturcts/interfaces';
+import { User, ClientData } from '@/dataSturcts/interfaces/interfaces';
+import { Metadata } from "@/dataSturcts/interfaces/Metadata"
 import store from "@/store"
 import LoginResponse from '@/dataSturcts/InputResponse';
 
@@ -30,8 +29,8 @@ import LoginResponse from '@/dataSturcts/InputResponse';
 })
 
 export default class Login extends Vue {
-  username = "admin";
-  password = "admin";
+  username = '';
+  password = '';
 
   onLoginSubmit() {
     const user: User = {
@@ -45,34 +44,18 @@ export default class Login extends Vue {
       method: login.method,
       body: login.body,
       headers: login.headers
-    }).then(res => res.json()
+    }).then(async res => {
+      console.log(res);
+
+      return res.json()
+    }
     ).then((json: any) => {
 
+      console.log(json);
 
       let res = LoginResponse.fromJson(json)
+      res.toStore()
 
-      console.log("json", json)
-      console.log("res", res)
-
-     
-      
-      
-      let client : ClientData = {
-        clientId: res.clientId,
-        clientSecret: res.clientSecret,
-        myLoginToken: res.myLoginToken,
-        username: res.username,
-        stravaToken: null
-      }
-
-
-      console.log(client);
-      
-      
-
-
-      store.dispatch('updateDashboardData', res.toDashboardStruct() )
-      store.dispatch("updateClientData", client)
 
       this.$router.push({
         name: "Dashboard",

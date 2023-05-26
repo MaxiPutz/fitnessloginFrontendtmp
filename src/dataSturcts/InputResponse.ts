@@ -1,4 +1,6 @@
-import { DashboardStruct } from "./interfaces";
+import store from "@/store";
+import { ClientData } from "@/dataSturcts/interfaces/interfaces";
+import { Metadata } from "@/dataSturcts/interfaces/Metadata";
 
 export default class LoginResponse {
   clientId: string | null;
@@ -21,9 +23,9 @@ export default class LoginResponse {
     this.metadatas = metadatas;
   }
 
-  public toDashboardStruct(): DashboardStruct[] {
+  public toDashboardStruct(): Metadata[] {
     return this.metadatas.map((ele) => ({
-      averageHearRate: ele.averageHeartRate,
+      averageHeartRate: ele.averageHeartRate,
       averagePower: ele.averagePower,
       averageSpeed: ele.averageSpeed,
       metadataId: ele.metadataId,
@@ -35,9 +37,22 @@ export default class LoginResponse {
     }));
   }
 
+  public toStore() {
+    const client: ClientData = {
+      clientId: this.clientId,
+      clientSecret: this.clientSecret,
+      myLoginToken: this.myLoginToken,
+      username: this.username,
+      stravaToken: null,
+    };
+
+    store.dispatch("updateDashboardData", this.toDashboardStruct());
+    store.dispatch("updateClientData", client);
+  }
+
   static fromJson(json: any): LoginResponse {
-    console.log(json)
-    const metadatas : Metadata[] = json.metadatas.map( (ele : any ) => ({
+    console.log(json);
+    const metadatas: Metadata[] = json.metadatas.map((ele: any) => ({
       metadataId: ele.id,
       sport: ele.sport,
       startTime: ele.startTime,
@@ -47,29 +62,14 @@ export default class LoginResponse {
       averageHeartRate: ele.averageHearRate,
       averagePower: ele.averagePower,
       averageSpeed: ele.averageSpeed,
-    }) )
-
-     
-
+    }));
 
     return new LoginResponse(
       json.username,
       json.myLoginToken,
       json.clientId,
       json.clientSecret,
-      metadatas,
+      metadatas
     );
   }
-}
-
-interface Metadata {
-  averageHeartRate: number;
-  averagePower: number;
-  averageSpeed: number;
-  metadataId: string;
-  sport: string;
-  startTime: string;
-  totalDistance: number;
-  totalTime: number;
-  workoutDataCount: number;
 }
