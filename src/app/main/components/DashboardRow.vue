@@ -12,6 +12,9 @@
         <td>
             <button v-if="isReadyToSync" @click="getWorkout">sync</button>
         </td>
+        <td v-if="autoSync">"autoSync"</td>
+        <td v-if="bulkSync">"bulkSync"</td>
+
     </tr>
 </template>
 
@@ -30,17 +33,31 @@ import { ClientData } from '@/dataSturcts/interfaces/interfaces';
     props: {
         msg: {
             type: Object as () => Metadata,
-        }
+        },
+        autoSync: {
+            type: Object as () => boolean,
+        },
+        bulkSync: {
+            type: Object as () => boolean,
+        },
+
     }
 })
 
 export default class DashboardRow extends Vue {
+    autoSync!: boolean
+    bulkSync!: boolean
     msg!: Metadata
     client?: ClientData
     isReadyToSync = false
 
     getWorkout() {
         console.log("");
+        if (this.isReadyToSync == false) {
+            console.log("no sync");
+
+            return
+        }
         this.isReadyToSync = false
         const token: ClientData = store.getters.getClientData
 
@@ -52,16 +69,16 @@ export default class DashboardRow extends Vue {
             }).then(async ele => {
                 console.log(ele);
                 const json = await ele.json()
-                console.log(json);
+                // console.log(json);
 
                 let str = mapStructToCSVHeader(this.msg.metadataId, json)
 
-                console.log(str);
+                // console.log(str);
 
                 if (this.client != null) {
 
                     console.log(json.time.data.length);
-                    
+
                     this.msg.workoutDataCount = json.time.data.length
 
                     let req = requests2.workoutDataInsert(this.client?.myLoginToken, this.msg.metadataId, str.header, str.CSV)
@@ -69,7 +86,13 @@ export default class DashboardRow extends Vue {
                         method: req.method,
                         body: req.body,
                         headers: req.header,
+                    }).then((_res) => {
+                        console.log("response success");
+
+                        store.dispatch("setDashboardDataSyncCount", this.msg)
+
                     })
+
                 }
 
             })
@@ -80,6 +103,20 @@ export default class DashboardRow extends Vue {
         this.client = store.getters.getClientData
 
         this.isReadyToSync = this.client?.stravaToken?.accessToken != null && this.msg.workoutDataCount == 0
+
+
+        store.watch(() => store.getters.getSync, (newVal: any[]) => {
+            if (this.bulkSync) {
+                console.log(this.msg.metadataId);
+
+                this.getWorkout()
+
+            }
+        })
+
+        if (this.autoSync) {
+            this.getWorkout()
+        }
     }
 }
 

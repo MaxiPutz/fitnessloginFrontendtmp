@@ -29,6 +29,12 @@ export default class OAuthFlow extends Vue {
     }
 
     get myToken(): string {
+        const token = sessionStorage.getItem("accessToken") ?? ""
+        console.log(token
+        );
+        
+        return token;
+        // eslint-disable-next-line no-unreachable
         return this.$route.query.myToken as string
     }
 

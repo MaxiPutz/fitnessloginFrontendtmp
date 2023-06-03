@@ -22,6 +22,7 @@ import { User, ClientData } from '@/dataSturcts/interfaces/interfaces';
 import { Metadata } from "@/dataSturcts/interfaces/Metadata"
 import store from "@/store"
 import LoginResponse from '@/dataSturcts/InputResponse';
+import { ServerAddress } from '@/dataSturcts/interfaces/static/ServerAddress';
 
 
 @Options({
@@ -40,7 +41,9 @@ export default class Login extends Vue {
 
     const login = requests.login(user)
 
-    fetch("http://localhost:8080/api/login", {
+    const serverURL = (new ServerAddress).getUrl()
+
+    fetch(serverURL + "/api/login", {
       method: login.method,
       body: login.body,
       headers: login.headers
@@ -56,6 +59,8 @@ export default class Login extends Vue {
       let res = LoginResponse.fromJson(json)
       res.toStore()
 
+      sessionStorage.setItem('accessToken', res.myLoginToken);
+      document.cookie = `accessToken=${res.myLoginToken}`
 
       this.$router.push({
         name: "Dashboard",

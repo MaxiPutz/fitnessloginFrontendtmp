@@ -4,6 +4,7 @@ import { Metadata } from "./dataSturcts/interfaces/Metadata";
 
 export default createStore({
   state: {
+    sync: [],
     dashboardData: [] as Metadata[],
     clientData: null as ClientData | null,
   },
@@ -14,8 +15,22 @@ export default createStore({
     setClientData(state, data: ClientData) {
       state.clientData = data;
     },
+    setSync(state, data: []) {
+      state.sync = data;
+    },
   },
   actions: {
+    fireSync({ commit }, data: []) {
+      commit("setSync", data);
+    },
+    setDashboardDataSyncCount({ commit }, data: Metadata) {
+      const newMetadata: Metadata[] = this.state.dashboardData.map((ele) =>
+        ele.metadataId != data.metadataId ? ele : data
+      );
+      console.log("for setDashboardData", data);
+      
+      commit("setDashboardData", newMetadata);
+    },
     updateDashboardData({ commit }, data: Metadata) {
       commit("setDashboardData", data);
     },
@@ -63,6 +78,9 @@ export default createStore({
     },
     getClientData(state): ClientData | null {
       return state.clientData;
+    },
+    getSync(state): any[] {
+      return state.sync;
     },
   },
 });

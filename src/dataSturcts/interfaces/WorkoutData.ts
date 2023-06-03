@@ -63,8 +63,8 @@ export function mapStructToCSVHeader(
           return timerTime[i]?.toString() ?? "";
         case "power":
           return power[i]?.toString() ?? "";
-        case "speed":
-          return speed[i]?.toString() ?? "";
+        case "speed": 
+          return speed[i] ? speed[i] * 3.6 : 0;
         case "heartRate":
           return heartrate[i]?.toString() ?? "";
         default:

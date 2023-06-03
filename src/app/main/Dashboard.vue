@@ -1,11 +1,10 @@
 <template>
     <div>
         <h1> Welcome {{ client?.username }} </h1>
-
         <div v-if="isStravaLoggin">
             <div>
                 <h2>
-                    You are loggedin Strava
+                    Authentication in Strava Success
                 </h2>
             </div>
             <div>
@@ -15,9 +14,8 @@
                 <input type="submit" value="loadAllMetadata" @click="onLoadAllMetadata">
                 <br><br>
 
-
+                <button @click="onBulkSync">bulkSync</button>
             </div>
-
         </div>
         <div v-if="!isStravaLoggin">
             <label for="clientID">clientID:</label>
@@ -28,8 +26,15 @@
         </div>
 
 
+
+        <br><br>
+        <button @click="onRunApp" v-if="isRideAppReady">RUN</button>
+        <button @click="onRideApp" v-if="isRunningAppReady">RIDE</button>
+
+
+
         <div v-if="isLoading">
-            metadata is loading you received at this time {{ foundData }}
+            The metadata you have at this time is in the loading process \t {{ foundData }} \t workouts
         </div>
 
         <DashboardTable />
@@ -39,7 +44,10 @@
 
 <script lang="ts">
 import DashboardTable from './components/DashboardTable.vue';
-import { ServerAddress } from "@/dataSturcts/StaticData"
+import { ServerAddress } from "@/dataSturcts/interfaces/static/ServerAddress"
+import { FrontendServerAddress } from "@/dataSturcts/interfaces/static/FrontendServerAddress"
+
+
 
 import { requests, getAllActivities } from "@/dataSturcts/StravaRequests"
 import { requests2 } from "@/dataSturcts/ServerRequests"
@@ -68,6 +76,12 @@ export default class Dashboard extends Vue {
     public isLoading = false
     public foundData = 0
 
+    public isRunningAppReady = false
+    public isRideAppReady = false
+
+
+    private server = new ServerAddress();
+    private uiServer = new FrontendServerAddress()
 
     onLoadLatestMetadata() {
         if (this.client && this.client.stravaToken) {
@@ -79,10 +93,10 @@ export default class Dashboard extends Vue {
             }).then(async ele => {
                 let json = await ele.json()
                 const receiveData = (metadataFromJsonArray(json));
-                const oldData : Metadata[] = store.getters.getDashboardData
+                const oldData: Metadata[] = store.getters.getDashboardData
 
                 const newData = receiveData
-                        .filter(nEle => oldData.filter(oEle => oEle.metadataId == nEle.metadataId).length == 0)
+                    .filter(nEle => oldData.filter(oEle => oEle.metadataId == nEle.metadataId).length == 0)
 
 
                 let str = mapMetadataToCSVHeader(newData)
@@ -146,11 +160,11 @@ export default class Dashboard extends Vue {
     }
 
     onOauthLogin() {
-        let server = new ServerAddress();
+
 
         console.log(this.myToken)
         let url = "https://www.strava.com/oauth/authorize?client_id=" + this.clientId + "&response_type=code&redirect_uri=" +
-            "http://localhost:8081" + "/OAuthFlow?myToken=" + this.myToken + "&approval_prompt=force&scope=read_all,activity:read_all,profile:read_all"
+            (new URL(document.URL)).origin /* this.uiServer.getUrl() */ + "/OAuthFlow" /* + ?myToken=" + "this.myToken "+ */ + "&approval_prompt=force&scope=read_all,activity:read_all,profile:read_all"
 
         console.log("oauth", this.clientId)
 
@@ -162,17 +176,44 @@ export default class Dashboard extends Vue {
         const req = requests2.setStravaData(this.myToken, this.clientId, this.clientSecret)
 
         console.log(req);
-        
+
 
         fetch(req.url, {
             method: req.method,
-            body:req.body,
-            headers: req.header,            
+            body: req.body,
+            headers: req.header,
         })
 
         window.location.assign(url)
 
 
+    }
+
+
+    onBulkSync() {
+        console.log("");
+        store.dispatch("fireSync", [])
+    }
+
+    onRunApp() {
+        console.log("runapp");
+
+
+        sessionStorage.setItem('url', this.server.getRunUrl());
+        sessionStorage.setItem('accessToken', this.client?.myLoginToken ?? "");
+        window.location.assign((new URL(document.URL)).origin + "/app")
+
+        // window.location.assign(this.server.getApp())
+    }
+
+    onRideApp() {
+        console.log("rideApp");
+
+        sessionStorage.setItem('url', this.server.getRideUrl());
+        sessionStorage.setItem('accessToken', this.client?.myLoginToken ?? "");
+        window.location.assign((new URL(document.URL)).origin + "/app")
+
+        // window.location.assign(this.server.getApp())
     }
 
     mounted(): void {
@@ -190,6 +231,29 @@ export default class Dashboard extends Vue {
             this.isStravaLoggin = true
         }
 
+
+
+
+        store.watch(() => store.getters.getDashboardData, (newData: Metadata[]) => {
+            let runCount = newData.filter(ele => ele.sport == "Run").filter((ele) => ele.workoutDataCount > 1).length
+            let rideCount = newData.filter(ele => ele.sport == "Ride").filter((ele) => ele.workoutDataCount > 1).length
+
+            console.log("run count", runCount);
+
+            this.isRideAppReady = runCount > 1 ? true : false
+            this.isRunningAppReady = rideCount > 1 ? true : false
+
+        });
+
+        var newData: Metadata[] = store.getters.getDashboardData
+
+        let runCount = newData.filter(ele => ele.sport == "Run").filter((ele) => ele.workoutDataCount > 1).length
+        let rideCount = newData.filter(ele => ele.sport == "Ride").filter((ele) => ele.workoutDataCount > 1).length
+
+        console.log("run count", runCount);
+
+        this.isRideAppReady = runCount > 1 ? true : false
+        this.isRunningAppReady = rideCount > 1 ? true : false
     }
 }
 </script>

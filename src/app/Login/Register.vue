@@ -18,6 +18,8 @@ import { Vue } from 'vue-class-component'
 import { requests } from "@/dataSturcts/ServerRequests"
 import { User, ClientData } from '@/dataSturcts/interfaces/interfaces';
 import LoginResponse from '@/dataSturcts/InputResponse';
+import { ServerAddress } from '@/dataSturcts/interfaces/static/ServerAddress';
+
 
 
 export default class Register extends Vue {
@@ -37,7 +39,7 @@ export default class Register extends Vue {
     };
 
     // Perform the POST request to the server
-    fetch('http://localhost:8080/api/userCreate', {
+    fetch('/api/userCreate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,8 +55,10 @@ export default class Register extends Vue {
           };
 
           const login = requests.login(user)
+          const serverURL = (new ServerAddress).getUrl()
 
-          fetch("http://localhost:8080/api/login", {
+
+          fetch(serverURL + "/api/login", {
             method: login.method,
             body: login.body,
             headers: login.headers

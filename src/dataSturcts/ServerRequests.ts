@@ -1,4 +1,4 @@
-import { ServerAddress } from "./StaticData";
+import { ServerAddress } from "./interfaces/static/ServerAddress";
 import {
   User,
   FetchAPIStructPost,
@@ -6,6 +6,7 @@ import {
   FetchAPIStructGet,
 } from "./interfaces/interfaces";
 
+// eslint-disable-next-line @typescript-eslint/no-inferrable-types
 const url: string = new ServerAddress().getUrl();
 
 export const requests = {
