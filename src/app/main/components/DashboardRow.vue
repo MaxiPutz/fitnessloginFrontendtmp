@@ -12,11 +12,33 @@
         <td>
             <button v-if="isReadyToSync" @click="getWorkout">sync</button>
         </td>
-        <td v-if="autoSync">"autoSync"</td>
-        <td v-if="bulkSync">"bulkSync"</td>
+        <!-- <td v-if="autoSync">"autoSync"</td>
+        <td v-if="bulkSync">"bulkSync"</td> -->
 
     </tr>
 </template>
+
+<style>
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+</style>
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component';

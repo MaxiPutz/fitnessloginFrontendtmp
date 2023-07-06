@@ -1,8 +1,8 @@
 <template>
   <div class="login">
-    <h1>Welcome to login</h1>
-    <form @submit.prevent="onLoginSubmit">
+    <h1>Login</h1>
 
+    <form @submit.prevent="onLoginSubmit">
       <label for="username">Username:</label>
       <input type="text" id="username" v-model="username" name="username"><br><br>
       <label for="password">Password:</label>
@@ -10,10 +10,11 @@
       <input type="submit" value="Login">
     </form>
 
-    <Dashboard msg="dere" />
+    <Dashboard/>
 
   </div>
 </template>
+
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
@@ -59,15 +60,68 @@ export default class Login extends Vue {
       let res = LoginResponse.fromJson(json)
       res.toStore()
 
-      sessionStorage.setItem('accessToken', res.myLoginToken);
-      document.cookie = `accessToken=${res.myLoginToken}`
+   
 
       this.$router.push({
         name: "Dashboard",
       })
+    }).catch((ele) => {
+      alert("login faild")
     })
 
   }
 }
 </script>
 
+
+<style>
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 200px;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px; 
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border: 1px solid #4CAF50;
+}
+
+</style>

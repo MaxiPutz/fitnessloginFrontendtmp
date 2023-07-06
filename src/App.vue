@@ -2,13 +2,18 @@
   <div>
     <nav v-if="!isLoggedIn">
       <router-link to="/">Login</router-link> |
-      <router-link to="/register">Register</router-link>
+      <router-link to="/register">Register</router-link> | 
+      <router-link to="/info">Info</router-link> |
+      <router-link to="/demo">Demo</router-link> |
+      <router-link to="/how-to-use">How to Use</router-link>
     </nav>
     <main>
       <router-view />
     </main>
   </div>
 </template>
+
+
 
 <script lang="ts">
 import { Vue } from 'vue-class-component';

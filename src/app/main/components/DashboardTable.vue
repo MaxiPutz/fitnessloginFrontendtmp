@@ -1,6 +1,7 @@
 <template>
-    <div>
+    <div class="content">
         <h1>Dashboard</h1>
+        
         <table>
             <thead>
                 <tr>
@@ -22,6 +23,61 @@
         </table>
     </div>
 </template>
+
+<style>
+h1 {
+    margin-top: 0;
+}
+
+.content {
+    width: 100%;
+
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    /* Center the table */
+}
+
+
+thead {
+    width: 100%;
+}
+tbody {
+    width: 100%;
+}
+
+thead th {
+    background-color: #f2f2f2;
+    text-align: left;
+    padding: 10px;
+
+}
+
+tbody td {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+</style>
+
+
   
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
@@ -90,7 +146,7 @@ export default class DashboardTable extends Vue {
                 return {
                     metadata: ele,
                     autoSync: i <= (_count + _skipCount) && !skip,
-                    bulkSync: (_count + _skipCount) < i && i <= _skipCount + (2 * _count) && !skip 
+                    bulkSync: (_count + _skipCount) < i && i <= _skipCount + (2 * _count) && !skip
                 }
             })
 

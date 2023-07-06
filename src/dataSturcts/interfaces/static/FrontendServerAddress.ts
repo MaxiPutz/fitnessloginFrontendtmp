@@ -1,11 +1,8 @@
 export class FrontendServerAddress {
-    private ip  = "" // "http://localhost"
-    private port  = "" //":8080"
+  private ip =  "" //"http://192.168.0.206";
+  private port = "" //  ":8081";
 
-
-    public getUrl()   {
-        return `${this.ip}${this.port}`
-    }
-    
- 
+  public getUrl() {
+    return `${this.ip}${this.port}`;
+  }
 }

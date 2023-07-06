@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="register">
     <h1>Register</h1>
     <form @submit.prevent="registerUser">
       <label for="username">Username:</label>
@@ -28,6 +28,7 @@ export default class Register extends Vue {
   repeatPassword = '';
 
   registerUser(): void {
+    const serverURL = (new ServerAddress).getUrl()
     if (this.password !== this.repeatPassword) {
       alert('Passwords do not match.');
       return;
@@ -39,7 +40,7 @@ export default class Register extends Vue {
     };
 
     // Perform the POST request to the server
-    fetch('/api/userCreate', {
+    fetch( serverURL +'/api/userCreate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +56,8 @@ export default class Register extends Vue {
           };
 
           const login = requests.login(user)
-          const serverURL = (new ServerAddress).getUrl()
+
+          console.log(serverURL);
 
 
           fetch(serverURL + "/api/login", {
@@ -95,3 +97,57 @@ export default class Register extends Vue {
 }
 </script>
 
+
+<style>
+.register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 200px;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border: 1px solid #4CAF50;
+}
+
+
+
+</style>

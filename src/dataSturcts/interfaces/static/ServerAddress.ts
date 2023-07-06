@@ -1,22 +1,20 @@
 export class ServerAddress {
-    private ip  = "" // "http://localhost"
-    private port  = "" // ":8080"
+  private ip = ""//"http://192.168.0.206"
+  private port = ""; // ":8080"
 
+  public getUrl() {
+    return `${this.ip}${this.port}`;
+  }
 
-    public getUrl()   {
-        return `${this.ip}${this.port}`
-    }
-    
-    
-    public getApp() {
-        return `${this.getUrl()}/app`
-    }
+  public getApp() {
+    return `${this.getUrl()}/app`;
+  }
 
-    public getRunUrl() {
-        return `${this.getUrl()}/api/runningApp`
-    }
+  public getRunUrl() {
+    return `${this.getUrl()}/api/runningApp`;
+  }
 
-    public getRideUrl() {
-        return `${this.getUrl()}/api/RideApp`
-    }
+  public getRideUrl() {
+    return `${this.getUrl()}/api/RideApp`;
+  }
 }

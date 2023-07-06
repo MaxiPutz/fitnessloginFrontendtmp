@@ -1,43 +1,50 @@
 <template>
-    <div>
-        <h1> Welcome {{ client?.username }} </h1>
-        <div v-if="isStravaLoggin">
-            <div>
-                <h2>
-                    Authentication in Strava Success
-                </h2>
+    <div class="dashboard">
+        <div class="main-content">
+            <h1> Welcome {{ client?.username }} </h1>
+            <div v-if="isStravaLoggin">
+                <div>
+                    <h2>
+                        Authentication in Strava Success
+                    </h2>
+                </div>
+                <div>
+                    <label for="loadLatestMetadata"></label>
+                    <input type="submit" value="loadLatestMetadata" @click="onLoadLatestMetadata">
+                    <label for="loadAllMetadata"></label>
+                    <input type="submit" value="loadAllMetadata" @click="onLoadAllMetadata">
+                    <br><br>
+
+                    <button @click="onBulkSync">bulkSync</button>
+                </div>
             </div>
-            <div>
-                <label for="loadLatestMetadata"></label>
-                <input type="submit" value="loadLatestMetadata" @click="onLoadLatestMetadata">
-                <label for="loadAllMetadata"></label>
-                <input type="submit" value="loadAllMetadata" @click="onLoadAllMetadata">
-                <br><br>
-
-                <button @click="onBulkSync">bulkSync</button>
+            <div v-if="!isStravaLoggin" class="clientInfo">
+                <div>
+                    <button @click="openHelpWindow">Help</button>
+                </div>
+                <label for="clientID">client ID:</label>
+                <input type="text" id="clientID" name="clientID" v-model="clientId"><br><br>
+                <label for="clientSecret">client Secret:</label>
+                <input type="password" id="clientSecret" name="clientSecret" v-model="clientSecret"><br><br>
+                <input type="submit" value="OAuth" @click="onOauthLogin">
             </div>
-        </div>
-        <div v-if="!isStravaLoggin">
-            <label for="clientID">clientID:</label>
-            <input type="text" id="clientID" name="clientID" v-model="clientId"><br><br>
-            <label for="clientSecret">clientSecret:</label>
-            <input type="password" id="clientSecret" name="clientSecret" v-model="clientSecret"><br><br>
-            <input type="submit" value="OAuth" @click="onOauthLogin">
-        </div>
 
 
 
-        <br><br>
-        <button @click="onRunApp" v-if="isRideAppReady">RUN</button>
-        <button @click="onRideApp" v-if="isRunningAppReady">RIDE</button>
+            <br><br>
 
 
+            <div v-if="isLoading">
+                The metadata you have at this time is in the loading process {{ foundData }} workouts
+            </div>
 
-        <div v-if="isLoading">
-            The metadata you have at this time is in the loading process \t {{ foundData }} \t workouts
+            <DashboardTable />
         </div>
 
-        <DashboardTable />
+        <footer class="button-bar">
+            <button @click="onRunApp" v-if="isRideAppReady">RUN</button>
+            <button @click="onRideApp" v-if="isRunningAppReady">RIDE</button>
+        </footer>
 
     </div>
 </template>
@@ -82,6 +89,10 @@ export default class Dashboard extends Vue {
 
     private server = new ServerAddress();
     private uiServer = new FrontendServerAddress()
+
+    openHelpWindow() {
+        window.open('/how-to-use', '_blank');
+    }
 
     onLoadLatestMetadata() {
         if (this.client && this.client.stravaToken) {
@@ -257,3 +268,87 @@ export default class Dashboard extends Vue {
     }
 }
 </script>
+
+
+<style>
+.clientInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 75h;
+    font-family: Arial, sans-serif;
+}
+
+.main-content {
+    min-height: 50vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"],
+button {
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+input[type="submit"],
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #45a049;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border: 1px solid #4CAF50;
+}
+
+label {
+    font-weight: bold;
+}
+
+.label-inline {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.button-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    height: 80px;
+    bottom: 0;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+</style>

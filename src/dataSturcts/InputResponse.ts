@@ -64,6 +64,9 @@ export default class LoginResponse {
       averageSpeed: ele.averageSpeed,
     }));
 
+    sessionStorage.setItem('accessToken', json.myLoginToken);
+    document.cookie = `accessToken=${json.myLoginToken}`
+
     return new LoginResponse(
       json.username,
       json.myLoginToken,
