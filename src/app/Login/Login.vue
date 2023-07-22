@@ -42,7 +42,9 @@ export default class Login extends Vue {
 
     const login = requests.login(user)
 
-    const serverURL = (new ServerAddress).getUrl()
+    const serverURL = (new ServerAddress()).getUrl()
+
+    console.log("serverURL", serverURL)
 
     fetch(serverURL + "/api/login", {
       method: login.method,

@@ -53,7 +53,7 @@ export default class LoginResponse {
   static fromJson(json: any): LoginResponse {
     console.log(json);
     const metadatas: Metadata[] = json.metadatas.map((ele: any) => ({
-      metadataId: ele.id,
+      metadataId: ele.workoutId,
       sport: ele.sport,
       startTime: ele.startTime,
       totalDistance: ele.totalDistance,

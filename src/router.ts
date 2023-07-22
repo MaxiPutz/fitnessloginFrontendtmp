@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 import Login from "./app/Login/Login.vue";
 import Register from "@/app/Login/Register.vue";
 import Dashboard from "@/app/main/Dashboard.vue";
@@ -7,14 +7,14 @@ import Info from "@/app/Login/Info.vue"
 import Demo from "@/app/Login/Demo.vue"
 import HowToUse from "@/app/Login/HowToUse.vue"
 
-const routes = [
+const routes : RouteRecordRaw[]= [
   { path: "/", component: Login, name: "Login" },
   { path: "/register", component: Register, name: "Register" },
-  { path: "/dashboard", component: Dashboard, name: "Dashboard"},
-  { path: "/OAuthFLow", component: OAuthFlow},
-  { path: "/info", component: Info, name: "info"},
-  { path: "/demo", component: Demo, name: "demo"},
-  { path: "/how-to-use", component: HowToUse, name: "HowToUse"}
+  { path: "/dashboard", component: Dashboard, name: "Dashboard" },
+  { path: "/OAuthFLow", component: OAuthFlow },
+  { path: "/info", component: Info, name: "info" },
+  { path: "/demo", component: Demo, name: "demo" },
+  { path: "/how-to-use", component: HowToUse, name: "HowToUse" }
 
 ];
 
