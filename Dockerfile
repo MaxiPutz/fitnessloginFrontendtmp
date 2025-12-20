@@ -18,3 +18,12 @@ ENV VUE_APP_PUBLIC_PATH=$VUE_APP_PUBLIC_PATH
 
 RUN npm run build
 
+# ---------- nginx ----------
+FROM nginx:alpine
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Vue unter /fitness
+RUN mkdir -p /usr/share/nginx/html/fitness
+COPY --from=build /app/dist/ /usr/share/nginx/html/fitness/
+
