@@ -9,7 +9,7 @@ import HowToUse from "@/app/Login/HowToUse.vue"
 
 
 
-const root = process.env.VUE_APP_PUBLIC_PATH ?? "/"
+const root = process.env.VUE_APP_PUBLIC_PATH ?? "/fitness/login/"
 
 const routes: RouteRecordRaw[] = [
   { path: `${root}`, component: Login, name: "Login" },
