@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+4import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 import Login from "./app/Login/Login.vue";
 import Register from "@/app/Login/Register.vue";
 import Dashboard from "@/app/main/Dashboard.vue";
@@ -13,9 +13,9 @@ const root = process.env.VUE_APP_PUBLIC_PATH ?? "/fitness/login/"
 
 const routes: RouteRecordRaw[] = [
   { path: `${root}`, component: Login, name: "Login" },
-  { path: `/`, component: Login, name: "Login" },
-  { path: `/fitness2`, component: Login, name: "Login" },
-  { path: `/fitness/login2`, component: Login, name: "Login" },
+  { path: `/`, component: Login, name: "Login2" },
+  { path: `/fitness2`, component: Login, name: "Login3" },
+  { path: `/fitness/login2`, component: Login, name: "Login4" },
   { path: `/register`, component: Register, name: "Register" },
   { path: `/dashboard`, component: Dashboard, name: "Dashboard" },
   { path: `/OAuthFLow`, component: OAuthFlow },
@@ -26,6 +26,6 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export default createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(root),
   routes,
 });
