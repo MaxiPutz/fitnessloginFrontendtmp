@@ -1,4 +1,4 @@
-4import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 import Login from "./app/Login/Login.vue";
 import Register from "@/app/Login/Register.vue";
 import Dashboard from "@/app/main/Dashboard.vue";
