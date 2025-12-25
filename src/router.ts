@@ -14,6 +14,8 @@ const root = process.env.VUE_APP_PUBLIC_PATH ?? "/fitness/login/"
 const routes: RouteRecordRaw[] = [
   { path: `${root}`, component: Login, name: "Login" },
   { path: `/`, component: Login, name: "Login" },
+  { path: `/fitness2`, component: Login, name: "Login" },
+  { path: `/fitness/login2`, component: Login, name: "Login" },
   { path: `/register`, component: Register, name: "Register" },
   { path: `/dashboard`, component: Dashboard, name: "Dashboard" },
   { path: `/OAuthFLow`, component: OAuthFlow },
