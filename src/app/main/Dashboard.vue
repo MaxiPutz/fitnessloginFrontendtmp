@@ -65,7 +65,7 @@ import { Options, Vue } from 'vue-class-component';
 import { ClientData } from "@/dataSturcts/interfaces/interfaces"
 import store from '@/store';
 
-const base = process.env.VUE_APP_PUBLIC_PATH ?? ""
+const base = process.env.VUE_APP_PUBLIC_PATH ?? "/"
 
 
 @Options({
@@ -177,7 +177,7 @@ export default class Dashboard extends Vue {
 
     console.log(this.myToken)
     let url = "https://www.strava.com/oauth/authorize?client_id=" + this.clientId + "&response_type=code&redirect_uri=" +
-      (new URL(document.URL)).origin /* this.uiServer.getUrl() */ + base + "/OAuthFlow" /* + ?myToken=" + "this.myToken "+ */ + "&approval_prompt=force&scope=read_all,activity:read_all,profile:read_all"
+      (new URL(document.URL)).origin /* this.uiServer.getUrl() */ + base + "OAuthFlow" /* + ?myToken=" + "this.myToken "+ */ + "&approval_prompt=force&scope=read_all,activity:read_all,profile:read_all"
 
     console.log("oauth", this.clientId)
 
