@@ -7,14 +7,18 @@ import Info from "@/app/Login/Info.vue"
 import Demo from "@/app/Login/Demo.vue"
 import HowToUse from "@/app/Login/HowToUse.vue"
 
-const routes : RouteRecordRaw[]= [
-  { path: "/", component: Login, name: "Login" },
-  { path: "/register", component: Register, name: "Register" },
-  { path: "/dashboard", component: Dashboard, name: "Dashboard" },
-  { path: "/OAuthFLow", component: OAuthFlow },
-  { path: "/info", component: Info, name: "info" },
-  { path: "/demo", component: Demo, name: "demo" },
-  { path: "/how-to-use", component: HowToUse, name: "HowToUse" }
+
+
+const root = process.env.VUE_APP_PUBLIC_PATH ?? "/"
+
+const routes: RouteRecordRaw[] = [
+  { path: `${root}`, component: Login, name: "Login" },
+  { path: `${root}register`, component: Register, name: "Register" },
+  { path: `${root}dashboard`, component: Dashboard, name: "Dashboard" },
+  { path: `${root}OAuthFLow`, component: OAuthFlow },
+  { path: `${root}info`, component: Info, name: "info" },
+  { path: `${root}demo`, component: Demo, name: "demo" },
+  { path: `${root}how-to-use`, component: HowToUse, name: "HowToUse" }
 
 ];
 
