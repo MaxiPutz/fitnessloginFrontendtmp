@@ -66,6 +66,7 @@ import { ClientData } from "@/dataSturcts/interfaces/interfaces"
 import store from '@/store';
 
 const base = process.env.VUE_APP_PUBLIC_PATH ?? "/"
+const appBase = process.env.VUE_APP_REACT_PATH ?? "/app"
 
 
 @Options({
@@ -214,7 +215,7 @@ export default class Dashboard extends Vue {
 
     sessionStorage.setItem('url', this.server.getRunUrl());
     sessionStorage.setItem('accessToken', this.client?.myLoginToken ?? "");
-    window.location.assign((new URL(document.URL)).origin + "/app")
+    window.location.assign((new URL(document.URL)).origin + appBase)
 
     // window.location.assign(this.server.getApp())
   }
@@ -224,7 +225,7 @@ export default class Dashboard extends Vue {
 
     sessionStorage.setItem('url', this.server.getRideUrl());
     sessionStorage.setItem('accessToken', this.client?.myLoginToken ?? "");
-    window.location.assign((new URL(document.URL)).origin + "/app")
+    window.location.assign((new URL(document.URL)).origin + appBase)
 
     // window.location.assign(this.server.getApp())
   }
